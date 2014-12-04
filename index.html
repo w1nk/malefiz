@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>malefiz</title>
+  <link rel="stylesheet" href="jquery-ui.css">
+
+  <script src="bundle.js"></script>
+
+
+  <script src="jquery-1.10.2.js"></script>
+
+  <script src="jquery-ui.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+  #draggable, #draggable2 { width: 100px; height: 100px; padding: 0.5em; float: left; margin: 10px 10px 10px 0; }
+  #droppable { width: 150px; height: 150px; padding: 0.5em; float: left; margin: 10px; }
+  </style>
+  <script>
+  $(function() {
+  $( "#draggable" ).draggable({ revert: "valid",
+  start: function(e, ui) {
+  //$( ".selector" ).droppable( "option", "accept", ".special" );
+  console.log(dir);
+
+  }
+  });
+
+  $( ".board-piece" ).droppable({ revert: "invalid",
+  start: function(e, ui) {
+  //$( ".selector" ).droppable( "option", "accept", ".special" );
+  console.log(dir);
+
+  }
+  });
+
+    $( "#draggable2" ).draggable({ revert: "invalid" });
+ 
+    $( "#droppable" ).droppable({
+      activeClass: "ui-state-default",
+      hoverClass: "ui-state-hover",
+      drop: function( event, ui ) {
+        $( this )
+          .addClass( "ui-state-highlight" )
+          .find( "p" )
+            .html( "Dropped!" );
+      }
+    });
+
+  // init board
+  drawboard = function() {
+  var e = document.getElementById("board"); // whatever you want to append the rows to: 
+  $("#board").empty();
+  var count = 0;
+  console.log("drawing");
+  for(var i = dir.board.boardHeight-1; i >= 0; i--){ 
+        var row = document.createElement("div");
+        row.id = "row_" + i; 
+        row.className = "board-row"; 
+        for(var x = 0; x < dir.board.boardWidth; x++){ 
+            var cell = document.createElement("div"); 
+            cell.id = "cell_" + count;
+            cell.className = "gridsquare board-square";
+            //cell.innerText = ++count;
+            cell.innerText = "";
+            var bg = "";
+            switch(dir.board.getPiece(x,i)) {
+              case 1:
+                bg = "board-open";
+                break;
+              case 2:
+                bg = "board-blocker";
+                break;
+              case 3:
+                bg = "board-goal";
+                break;
+              case 4:
+                bg = "board-start";
+                break;
+              case 0:
+                bg = "board-empty";
+                break;
+              case 200:
+                bg = "board-player1";
+                cell.innerText = "1";
+                break;
+              case 201:
+                bg = "board-player2";
+                cell.innerText = "2";
+                break;
+              case 202:
+                bg = "board-player3";
+                cell.innerText = "3";
+                break;
+              case 203:
+                bg = "board-player4";
+                cell.innerText = "4";
+                break;                               
+              default:
+                bg = "board-player";
+                break;
+            }
+            cell.className += " " + bg;
+
+            row.appendChild(cell); 
+        } 
+        e.appendChild(row); 
+      } 
+//  document.getElementById("code").innerText = e.innerHTML;
+  }
+  drawboard();
+  });
+  </script>
+</head>
+<body>
+ <!--
+<div id="draggable" class="ui-widget-content">
+  <p>I revert when I'm dropped</p>
+</div>
+ 
+<div id="draggable2" class="ui-widget-content">
+  <p>I revert when I'm not dropped</p>
+</div>
+ 
+<div id="droppable" class="ui-widget-header">
+  <p>Drop me here</p>
+</div>
+ -->
+<div id="board">
+</div>
+
+</body>
+</html>
